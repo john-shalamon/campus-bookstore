@@ -25,10 +25,15 @@ export default function LoginPage() {
     try {
       const supabase = createClient()
 
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
+
+      if (data?.session) {
+        // Save session or perform any additional actions if needed
+        router.push("/")
+      }
 
       if (error) throw error
 
@@ -37,7 +42,7 @@ export default function LoginPage() {
         description: "Welcome back!",
       })
 
-      router.push("/dashboard")
+      router.push("/")
       router.refresh()
     } catch (error: any) {
       toast({
